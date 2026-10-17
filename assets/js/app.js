@@ -12,6 +12,10 @@
   const escapeHtml = value => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
   const getState = () => { try { const saved = localStorage.getItem(STORAGE_KEY); if (saved) return JSON.parse(saved); } catch (e) {} return clone(window.SIPAFAS_DEMO); };
   const saveState = () => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} };
+  const THEME_KEY = 'sipafas_fase1_theme_v1';
+  const syncThemeToggle = () => { const dark = document.documentElement.getAttribute('data-theme') === 'dark'; $('.theme-toggle').each(function(){ const $btn = $(this); $btn.find('i').attr('class', dark ? 'bi bi-sun' : 'bi bi-moon-stars'); $btn.attr('title', dark ? 'Mode terang' : 'Mode gelap'); }); };
+  const applyTheme = (theme, persist = true) => { const t = theme === 'dark' ? 'dark' : 'light'; document.documentElement.setAttribute('data-theme', t); document.documentElement.setAttribute('data-bs-theme', t); if (persist) { try { localStorage.setItem(THEME_KEY, t); } catch (e) {} } syncThemeToggle(); };
+  const toggleTheme = () => { applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); };
   const dateFormat = (value, withTime = false) => { if (!value) return '—'; const d = new Date(value); if (Number.isNaN(d.getTime())) return '—'; return new Intl.DateTimeFormat('id-ID', withTime ? {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'} : {day:'2-digit',month:'short',year:'numeric'}).format(d); };
   const timeAgo = value => { const diff = Math.max(0, Date.now() - new Date(value).getTime()); const hours = Math.floor(diff / 3600000); if (hours < 1) return 'Baru saja'; if (hours < 24) return `${hours} jam lalu`; const days = Math.floor(hours / 24); return `${days} hari lalu`; };
   const person = id => state.users.find(u => u.id === Number(id));
@@ -87,6 +91,8 @@
   $('#loginForm').on('submit',function(e){e.preventDefault();const email=$('#loginEmail').val().trim().toLowerCase();const password=$('#loginPassword').val();const user=state.users.find(u=>u.email.toLowerCase()===email&&u.active);if(!user||password!=='demo123'){toast('Akun demo: gunakan email yang terdaftar dan kata sandi demo123.', 'danger');return;}startSession(user);});
   $('#registerForm').on('submit',function(e){e.preventDefault();const name=$('#registerName').val().trim(), email=$('#registerEmail').val().trim().toLowerCase(), password=$('#registerPassword').val();if(state.users.some(u=>u.email.toLowerCase()===email)){toast('Email sudah terdaftar. Silakan login.', 'danger');return;}if(password.length<6){toast('Kata sandi minimal 6 karakter.', 'danger');return;}const u={id:Math.max(0,...state.users.map(x=>x.id))+1,name,email,role:'mahasiswa',active:true};state.users.push(u);saveState();startSession(u);toast('Akun mahasiswa demo berhasil dibuat.');});
   $('#logoutBtn').on('click',endSession); $('#mobileMenuBtn').on('click',()=>$('#sidebar').toggleClass('open'));
+  $(document).on('click','.theme-toggle',toggleTheme);
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e){ let stored = null; try { stored = localStorage.getItem(THEME_KEY); } catch(err) {} if (!stored) applyTheme(e.matches ? 'dark' : 'light', false); }); } catch (e) {}
   $(document).on('click',function(e){if(window.innerWidth<=992&&!$(e.target).closest('#sidebar,#mobileMenuBtn').length)$('#sidebar').removeClass('open');});
   $('#userMenuBtn').on('click',function(){const options=state.users.filter(u=>u.active).map(u=>`${u.name} (${roleLabels[u.role]})`).join('\n');const choice=window.prompt('PILIH AKUN DEMO UNTUK BERGANTI ROLE:\n'+state.users.filter(u=>u.active).map((u,i)=>`${i+1}. ${u.name} — ${roleLabels[u.role]}`).join('\n')+'\n\nMasukkan nomor akun:');const index=Number(choice)-1;const list=state.users.filter(u=>u.active);if(choice!==null&&Number.isInteger(index)&&index>=0&&index<list.length){startSession(list[index]);toast('Beralih ke akun demo '+roleLabels[list[index].role]+'.');}});
   $(document).on('click','[data-open-complaint]',function(){activeComplaintId=Number($(this).data('open-complaint'));go('detail');});
@@ -111,6 +117,7 @@
 
   // Memulai aplikasi: data contoh hanya dibuat sekali per browser.
   state = getState();
+  syncThemeToggle();
   const savedSession = (()=>{try{return Number(localStorage.getItem(SESSION_KEY));}catch(e){return 0;}})();
   if(savedSession){const u=state.users.find(x=>x.id===savedSession&&x.active);if(u)startSession(u);else showAuth();}else showAuth();
 })(jQuery);

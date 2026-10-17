@@ -4,6 +4,7 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SIPAFAS — Sistem Pengaduan Fasilitas Kampus</title>
   <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <script>(function(){var t=null;try{t=localStorage.getItem('sipafas_fase1_theme_v1');}catch(e){}if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}var r=document.documentElement;r.setAttribute('data-theme',t);r.setAttribute('data-bs-theme',t);})();</script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="assets/css/style.css" rel="stylesheet">
@@ -22,6 +23,7 @@
       <div class="brand-orb orb-one"></div><div class="brand-orb orb-two"></div>
     </section>
     <section class="auth-form-panel">
+      <button type="button" class="btn icon-btn theme-toggle auth-theme-toggle" title="Mode gelap" aria-label="Ganti mode tampilan"><i class="bi bi-moon-stars"></i></button>
       <div class="auth-form-wrap">
         <div class="brand-inline"><span class="brand-mark small"><i class="bi bi-buildings-fill"></i></span><span>SIPAFAS</span></div>
         <div id="loginFormWrap">
@@ -66,7 +68,7 @@
       <div class="sidebar-bottom"><div class="help-card"><span class="help-icon"><i class="bi bi-chat-square-text"></i></span><strong>Butuh bantuan?</strong><p>Hubungi administrator kampus untuk kendala akun.</p><span class="help-foot">SIPAFAS · Fase 1</span></div><button id="logoutBtn" class="logout-link"><i class="bi bi-box-arrow-left"></i> Keluar akun</button></div>
     </aside>
     <div class="main-column">
-      <header class="topbar"><button id="mobileMenuBtn" class="btn icon-btn d-lg-none" aria-label="Buka menu"><i class="bi bi-list"></i></button><div class="topbar-title"><span class="topbar-kicker">SISTEM INFORMASI KAMPUS</span><strong id="topbarPageTitle">Dashboard</strong></div><div class="topbar-actions"><span class="today-pill"><i class="bi bi-calendar3 me-2"></i><span id="todayText"></span></span><button class="btn icon-btn notification-btn" title="Notifikasi (demo)"><i class="bi bi-bell"></i><span></span></button><div class="user-chip"><div class="avatar" id="userAvatar">MA</div><div class="user-chip-copy"><strong id="userName">Mahasiswa</strong><small id="userRole">Mahasiswa</small></div><button class="btn icon-btn user-menu-btn" id="userMenuBtn" title="Ganti akun demo"><i class="bi bi-chevron-down"></i></button></div></div></header>
+      <header class="topbar"><button id="mobileMenuBtn" class="btn icon-btn d-lg-none" aria-label="Buka menu"><i class="bi bi-list"></i></button><div class="topbar-title"><span class="topbar-kicker">SISTEM INFORMASI KAMPUS</span><strong id="topbarPageTitle">Dashboard</strong></div><div class="topbar-actions"><span class="today-pill"><i class="bi bi-calendar3 me-2"></i><span id="todayText"></span></span><button type="button" class="btn icon-btn theme-toggle" title="Mode gelap" aria-label="Ganti mode tampilan"><i class="bi bi-moon-stars"></i></button><button class="btn icon-btn notification-btn" title="Notifikasi (demo)"><i class="bi bi-bell"></i><span></span></button><div class="user-chip"><div class="avatar" id="userAvatar">MA</div><div class="user-chip-copy"><strong id="userName">Mahasiswa</strong><small id="userRole">Mahasiswa</small></div><button class="btn icon-btn user-menu-btn" id="userMenuBtn" title="Ganti akun demo"><i class="bi bi-chevron-down"></i></button></div></div></header>
       <main id="pageContent" class="page-content" aria-live="polite"></main>
       <footer class="app-footer"><span>© 2026 SIPAFAS · Sistem Pengaduan Fasilitas Kampus</span><span>Prototipe Fase 1 <i class="bi bi-circle-fill ms-1"></i></span></footer>
     </div>
